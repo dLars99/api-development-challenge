@@ -30,5 +30,10 @@ namespace APIDevelopmentChallenge.Tests.Mocks
             patient.Id = lastPatient.Id + 1;
             _data.Add(patient);
         }
+
+        public List<Patient> GetAll()
+        {
+            return _data;
+        }
     }
 }

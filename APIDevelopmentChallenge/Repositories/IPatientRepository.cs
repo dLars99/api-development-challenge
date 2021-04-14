@@ -6,6 +6,6 @@ namespace APIDevelopmentChallenge.Repositories
     public interface IPatientRepository
     {
         void Add(Patient patient);
-        List<Patient> Get();
+        List<Patient> GetAll();
     }
 }

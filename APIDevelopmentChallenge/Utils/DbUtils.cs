@@ -73,6 +73,16 @@ namespace GearPatch.Utils
             return reader.GetBoolean(reader.GetOrdinal(column));
         }
 
+        public static bool? GetNullableBool(SqlDataReader reader, string column)
+        {
+            var ordinal = reader.GetOrdinal(column);
+            if (reader.IsDBNull(ordinal))
+            {
+                return null;
+            }
+            return reader.GetBoolean(ordinal);
+        }
+
         /// <summary>
         ///  Get an int? (nullable int) from a data reader object and gracefully handle NULL values
         /// </summary>

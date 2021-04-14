@@ -44,5 +44,45 @@ namespace APIDevelopmentChallenge.Repositories
                 }
             }
         }
+
+        /// <summary>
+        /// Method to retrieve the full list of patient records
+        /// </summary>
+        public List<Patient> GetAll()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT Id, FirstName, MiddleName, LastName, SexAtBirth, DateOfBirth, Height, Weight,
+                               InsuranceCompany, MemberId, GroupId, IsPolicyHolder
+                          FROM Patient";
+                    var patientList = new List<Patient>();
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        patientList.Add(new Patient()
+                        {
+                            Id = DbUtils.GetInt(reader, "Id"),
+                            FirstName = DbUtils.GetString(reader, "FirstName"),
+                            MiddleName = DbUtils.GetString(reader, "MiddleName"),
+                            LastName = DbUtils.GetString(reader, "LastName"),
+                            SexAtBirth = DbUtils.GetString(reader, "SexAtBirth"),
+                            DateOfBirth = DbUtils.GetDateTime(reader, "DateOfBirth"),
+                            Height = DbUtils.GetInt(reader, "Height"),
+                            Weight = DbUtils.GetInt(reader, "Weight"),
+                            InsuranceCompany = DbUtils.GetString(reader, "InsuranceCompany"),
+                            MemberId = DbUtils.GetString(reader, "MemberId"),
+                            GroupId = DbUtils.GetString(reader, "GroupId"),
+                            IsPolicyHolder = DbUtils.GetNullableBool(reader, "IsPolicyHolder")
+                        });
+                    }
+                    reader.Close();
+                    return patientList;
+                }
+            }
+        }
     }
 }

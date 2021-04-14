@@ -37,5 +37,17 @@ namespace APIDevelopmentChallenge.Controllers
                 return StatusCode(500, "There was a problem saving this patient.");
             }
         }
+        [HttpGet]
+        public IActionResult Get()
+        {
+            try
+            {
+                return Ok(_patientRepository.GetAll());
+            }
+            catch
+            {
+                return StatusCode(500, "Unable to retrieve patients");
+            }
+        }
     }
 }
