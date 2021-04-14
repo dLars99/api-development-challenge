@@ -49,5 +49,16 @@ namespace APIDevelopmentChallenge.Controllers
                 return StatusCode(500, "Unable to retrieve patients");
             }
         }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var patient = _patientRepository.GetById(id);
+            if (patient == null)
+            {
+                return NotFound();
+            }
+            return Ok(patient);
+        }
     }
 }

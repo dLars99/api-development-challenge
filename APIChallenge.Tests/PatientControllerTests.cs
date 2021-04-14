@@ -16,7 +16,8 @@ namespace APIDevelopmentChallenge.Tests
             var patientCount = 20;
             var patients = CreateTestPatients(patientCount);
 
-            var controller = CreateController(patients);
+            var repo = new InMemoryPatientRepository(patients);
+            var controller = new PatientController(repo);
 
             var newPatient = new Patient()
             {
@@ -73,7 +74,7 @@ namespace APIDevelopmentChallenge.Tests
             var controller = CreateController(patients);
 
             var result = controller.Get(patientId);
-            Assert.IsType<NotFoundObjectResult>(result);
+            Assert.IsType<NotFoundResult>(result);
         }
 
         private PatientController CreateController(List<Patient> patients)
