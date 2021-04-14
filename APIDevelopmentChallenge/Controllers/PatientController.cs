@@ -1,0 +1,37 @@
+﻿using APIDevelopmentChallenge.Models;
+using APIDevelopmentChallenge.Repositories;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace APIDevelopmentChallenge.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class PatientController : ControllerBase
+    {
+        private readonly IPatientRepository _patientRepository;
+
+        public PatientController(IPatientRepository patientRepository)
+        {
+            _patientRepository = patientRepository;
+        }
+
+        [HttpPost]
+        public IActionResult Post(Patient patient)
+        {
+            try
+            {
+                _patientRepository.Add(patient);
+                return CreatedAtAction("Get", new { id = patient.Id }, patient);
+            }
+            catch
+            {
+                return StatusCode(500, "There was a problem saving this patient.");
+            }
+        }
+    }
+}

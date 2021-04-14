@@ -1,3 +1,4 @@
+using APIDevelopmentChallenge.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +33,7 @@ namespace APIDevelopmentChallenge
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "APIDevelopmentChallenge", Version = "v1" });
             });
+            services.AddTransient<IPatientRepository, PatientRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
