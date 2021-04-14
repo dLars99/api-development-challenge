@@ -35,5 +35,10 @@ namespace APIDevelopmentChallenge.Tests.Mocks
         {
             return _data;
         }
+
+        public Patient GetById(int id)
+        {
+            return _data.FirstOrDefault(p => p.Id == id);
+        }
     }
 }
