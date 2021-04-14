@@ -32,6 +32,6 @@ namespace APIDevelopmentChallenge.Models
         public string MemberId { get; set; }
         [MaxLength(25)]
         public string GroupId { get; set; }
-        public bool IsPolicyHolder { get; set; }
+        public bool? IsPolicyHolder { get; set; }
     }
 }
