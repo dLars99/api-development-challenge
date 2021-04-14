@@ -23,9 +23,10 @@ namespace APIDevelopmentChallenge.Models
         public DateTime TimeOfTest { get; set; }
         [Required]
         public DateTime EnteredTime { get; set; }
-        [MaxLength(100)]
+        [Required]
+        [MaxLength(255)]
         public string LabName { get; set; }
-        [MaxLength(100)]
+        [MaxLength(255)]
         public string OrderedByProvider { get; set; }
         public double Measurement { get; set; }
         public string MeasurementUnit { get; set; }

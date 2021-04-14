@@ -28,7 +28,7 @@ namespace APIDevelopmentChallenge.Models
         public int Weight { get; set; }
         [MaxLength(100)]
         public string InsuranceCompany { get; set; }
-        [MaxLength(25)]
+        [MaxLength(255)]
         public string MemberId { get; set; }
         [MaxLength(25)]
         public string GroupId { get; set; }
