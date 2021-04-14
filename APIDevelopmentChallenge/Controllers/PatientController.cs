@@ -23,6 +23,10 @@ namespace APIDevelopmentChallenge.Controllers
         [HttpPost]
         public IActionResult Post(Patient patient)
         {
+            if (patient.DateOfBirth > new DateTime())
+            {
+                return BadRequest("Invalid date of birth");
+            }
             try
             {
                 _patientRepository.Add(patient);
