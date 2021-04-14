@@ -7,7 +7,7 @@ GO
 USE [PatientLabResults]
 GO
 
-DROP TABLE IF EXISTS [LabTest];
+DROP TABLE IF EXISTS [LabResult];
 DROP TABLE IF EXISTS [Patient];
 
 CREATE TABLE [Patient] (
@@ -26,9 +26,9 @@ CREATE TABLE [Patient] (
 )
 GO
 
-CREATE TABLE [LabTest] (
+CREATE TABLE [LabResult] (
   [Id] integer PRIMARY KEY IDENTITY,
-  [Type] nvarchar(50) NOT NULL,
+  [TestType] nvarchar(50) NOT NULL,
   [Result] nvarchar(20) NOT NULL,
   [PatientId] integer NOT NULL,
   [TimeOfTest] datetime NOT NULL,
