@@ -33,5 +33,12 @@ namespace APIDevelopmentChallenge.Tests.Mocks
             return _data.FirstOrDefault(lr => lr.Id == id);
         }
 
+        public List<LabResult> GetByPatientId(int id)
+        {
+            var labResults = _data.Where(lr => lr.PatientId == id).ToList();
+
+            return labResults;
+        }
+
     }
 }

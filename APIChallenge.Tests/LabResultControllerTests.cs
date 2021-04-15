@@ -59,6 +59,26 @@ namespace APIDevelopmentChallenge.Tests
             Assert.Equal(labResultId, actualLabResult.Id);
         }
 
+        [Fact]
+        public void Get_By_Patient_Id_Returns_Matching_LabResults()
+        {
+            var patientId = 99;
+            var labResultCount = 20;
+            var patients = CreateTestPatients(20);
+            patients[0].Id = patientId;
+            var labResults = CreateTestLabResults(labResultCount);
+            labResults[0].PatientId = patientId;
+
+            var repo = new InMemoryLabResultRepository(labResults);
+            var patientRepo = new InMemoryPatientRepository(patients);
+            var controller = new LabResultController(repo, patientRepo);
+
+            var result = controller.GetByPatient(patientId);
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var actualLabResult = Assert.IsType<List<LabResult>>(okResult.Value);
+
+            Assert.All(actualLabResult, labResult => Assert.Equal(labResult.PatientId, patientId));
+        }
 
         private LabResultController CreateController(List<LabResult> labResults, List<Patient> patients)
         {
