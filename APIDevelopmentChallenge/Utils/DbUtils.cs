@@ -83,6 +83,16 @@ namespace GearPatch.Utils
             return reader.GetBoolean(ordinal);
         }
 
+        public static decimal? GetNullableDecimal(SqlDataReader reader, string column)
+        {
+            var ordinal = reader.GetOrdinal(column);
+            if (reader.IsDBNull(ordinal))
+            {
+                return null;
+            }
+            return reader.GetDecimal(ordinal);
+        }
+
         /// <summary>
         ///  Get an int? (nullable int) from a data reader object and gracefully handle NULL values
         /// </summary>

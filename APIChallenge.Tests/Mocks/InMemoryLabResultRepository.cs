@@ -28,5 +28,10 @@ namespace APIDevelopmentChallenge.Tests.Mocks
             _data.Add(labResult);
         }
 
+        public LabResult GetById(int id)
+        {
+            return _data.FirstOrDefault(lr => lr.Id == id);
+        }
+
     }
 }

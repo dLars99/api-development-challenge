@@ -28,7 +28,7 @@ namespace APIDevelopmentChallenge.Models
         public string LabName { get; set; }
         [MaxLength(255)]
         public string OrderedByProvider { get; set; }
-        public double Measurement { get; set; }
+        public decimal? Measurement { get; set; }
         public string MeasurementUnit { get; set; }
         public LabResult()
         {
