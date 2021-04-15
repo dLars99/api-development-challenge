@@ -8,5 +8,6 @@ namespace APIDevelopmentChallenge.Repositories
         void Add(LabResult labResult);
         LabResult GetById(int id);
         List<LabResult> GetByPatientId(int id);
+        void Update(LabResult labResult);
     }
 }

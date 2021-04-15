@@ -59,6 +59,5 @@ namespace APIDevelopmentChallenge.Tests.Mocks
             currentLabResult.MeasurementUnit = labResult.MeasurementUnit;
         }
 
-
     }
 }

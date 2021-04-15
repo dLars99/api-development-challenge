@@ -105,6 +105,48 @@ namespace APIDevelopmentChallenge.Repositories
             }
         }
 
+        /// <summary>
+        /// Method to update an existing lab result record in the database
+        /// </summary>
+        /// <param name="id">The id of the lab result to be updated</param>
+        /// <param name="labResult">The updated lab result data to be saved to the database</param>
+        public void Update(LabResult labResult)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE LabResult 
+                                           SET TestType = @TestType,
+                                               Result = @Result,
+                                               PatientId = @PatientId,
+                                               TimeOfTest = @TimeOfTest,
+                                               EnteredTime = @EnteredTime,
+                                               LabName = @LabName,
+                                               OrderedByProvider = @OrderedByProvider,
+                                               Measurement = @Measurement,
+                                               MeasurementUnit = @MeasurementUnit
+                                         WHERE Id = @Id;";
+
+                    DbUtils.AddParameter(cmd, "@TestType", labResult.TestType);
+                    DbUtils.AddParameter(cmd, "@Result", labResult.Result);
+                    DbUtils.AddParameter(cmd, "@PatientId", labResult.PatientId);
+                    DbUtils.AddParameter(cmd, "@TimeOfTest", labResult.TimeOfTest);
+                    DbUtils.AddParameter(cmd, "@EnteredTime", labResult.EnteredTime);
+                    DbUtils.AddParameter(cmd, "@LabName", labResult.LabName);
+                    DbUtils.AddParameter(cmd, "@OrderedByProvider", labResult.OrderedByProvider);
+                    DbUtils.AddParameter(cmd, "@Measurement", labResult.Measurement);
+                    DbUtils.AddParameter(cmd, "@MeasurementUnit", labResult.MeasurementUnit);
+                    DbUtils.AddParameter(cmd, "@Id", labResult.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
         private LabResult NewLabResultFromDb(SqlDataReader reader)
         {
             return new LabResult()

@@ -71,6 +71,32 @@ namespace APIDevelopmentChallenge.Controllers
             }
         }
 
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, LabResult labResult)
+        {
+            if (id != labResult.Id)
+            {
+                return BadRequest("LabResult Id does not match route");
+            }
+            var patient = _patientRepository.GetById(labResult.PatientId);
+            var errorMessage = ValidateData(labResult, patient);
+            if (!String.IsNullOrEmpty(errorMessage))
+            {
+                return BadRequest(errorMessage);
+            }
+
+            try
+            {
+                _labResultRepository.Update(labResult);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"Unable to update patient -- Internal error: {e}");
+            }
+
+            return NoContent();
+        }
+
         private static string ValidateData(LabResult labResult, Patient patient)
         {
             if (patient == null)

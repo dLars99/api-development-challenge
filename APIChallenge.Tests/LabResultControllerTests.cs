@@ -138,7 +138,7 @@ namespace APIDevelopmentChallenge.Tests
 
             controller.Put(labResultId, labResultToUpdate);
 
-            var labResultFromDb = repo.InternalData.FirstOrDefault(p => p.Id == labResultId);
+            var labResultFromDb = repo.InternalData.FirstOrDefault(lr => lr.Id == labResultId);
             Assert.NotNull(labResultFromDb);
 
             Assert.Equal(labResultToUpdate.TestType, labResultFromDb.TestType);
