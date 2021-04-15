@@ -9,5 +9,6 @@ namespace APIDevelopmentChallenge.Repositories
         List<Patient> GetAll();
         Patient GetById(int id);
         void Update(Patient patient);
+        void Delete(int id);
     }
 }

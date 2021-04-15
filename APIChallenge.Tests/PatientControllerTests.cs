@@ -141,6 +141,21 @@ namespace APIDevelopmentChallenge.Tests
             Assert.Equal(patientToUpdate.Weight, patientFromDb.Weight);
         }
 
+        [Fact]
+        public void Delete_Method_Removes_A_Patient()
+        {
+            var patientId = 99;
+            var patients = CreateTestPatients(5);
+            patients[0].Id = patientId;
+
+            var repo = new InMemoryPatientRepository(patients);
+            var controller = new PatientController(repo);
+
+            controller.Delete(patientId);
+
+            var patientFromDb = repo.InternalData.FirstOrDefault(p => p.Id == patientId);
+            Assert.Null(patientFromDb);
+        }
 
         private PatientController CreateController(List<Patient> patients)
         {

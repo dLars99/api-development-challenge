@@ -57,5 +57,16 @@ namespace APIDevelopmentChallenge.Tests.Mocks
             currentPatient.Height = patient.Height;
             currentPatient.Weight = patient.Weight;
         }
+
+        public void Delete(int id)
+        {
+            var patientToDelete = _data.FirstOrDefault(p => p.Id == id);
+            if (patientToDelete == null)
+            {
+                return;
+            }
+
+            _data.Remove(patientToDelete);
+        }
     }
 }

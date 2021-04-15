@@ -80,5 +80,20 @@ namespace APIDevelopmentChallenge.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                _patientRepository.Delete(id);
+            }
+            catch
+            {
+                return StatusCode(500, "Internal error -- Unable to delete patient");
+            }
+
+            return NoContent();
+        }
     }
 }
