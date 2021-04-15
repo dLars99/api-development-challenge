@@ -78,15 +78,16 @@ namespace APIDevelopmentChallenge.Controllers
             {
                 return BadRequest("LabResult Id does not match route");
             }
-            var patient = _patientRepository.GetById(labResult.PatientId);
-            var errorMessage = ValidateData(labResult, patient);
-            if (!String.IsNullOrEmpty(errorMessage))
-            {
-                return BadRequest(errorMessage);
-            }
-
             try
             {
+
+                var patient = _patientRepository.GetById(labResult.PatientId);
+                var errorMessage = ValidateData(labResult, patient);
+                if (!String.IsNullOrEmpty(errorMessage))
+                {
+                    return BadRequest(errorMessage);
+                }
+
                 _labResultRepository.Update(labResult);
             }
             catch (Exception e)
