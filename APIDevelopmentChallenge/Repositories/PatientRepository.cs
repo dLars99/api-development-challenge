@@ -15,8 +15,8 @@ namespace APIDevelopmentChallenge.Repositories
 
         /// <summary>
         /// Method to add a new patient into the database
-        /// <param name="patient">The patient model to save to the database</param>
         /// </summary>
+        /// <param name="patient">The patient model to save to the database</param>
         public void Add(Patient patient)
         {
             using (var conn = Connection)
@@ -75,9 +75,9 @@ namespace APIDevelopmentChallenge.Repositories
 
         /// <summary>
         /// Method to retrieve a single patient record by the patient's id
+        /// </summary>
         /// <param name="id">The id of the patient to be found</param>
         /// <returns>An instance of a Patient using retrieved data</returns>
-        /// </summary>
         public Patient GetById(int id)
         {
             using (var conn = Connection)
@@ -150,6 +150,26 @@ namespace APIDevelopmentChallenge.Repositories
         }
 
         /// <summary>
+        /// Method to remove a patient from the database
+        /// </summary>
+        /// <param name="id">Id of the patient to be removed</param>
+        public void Delete(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM Patient WHERE Id=@Id;";
+                    DbUtils.AddParameter(cmd, "@Id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        /// <summary>
         /// Method to create a new instance of a patient model with data
         /// retrieved from the database
         /// <param name="reader"></param>
@@ -173,6 +193,5 @@ namespace APIDevelopmentChallenge.Repositories
                 IsPolicyHolder = DbUtils.GetNullableBool(reader, "IsPolicyHolder")
             };
         }
-
     }
 }
