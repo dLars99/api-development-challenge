@@ -26,8 +26,8 @@ namespace APIDevelopmentChallenge.Tests
             {
                 TestType = "TestType",
                 Result = "Result",
-                PatientId = 999,
                 Patient = CreateTestPatient(999),
+                PatientId = 999,
                 TimeOfTest = DateTime.Now.AddDays(-2),
                 LabName = "LabName",
                 OrderedByProvider = "OrderedByProvider",
@@ -40,12 +40,53 @@ namespace APIDevelopmentChallenge.Tests
             Assert.Equal(labResultCount + 1, repo.InternalData.Count);
         }
 
-        //private LabResultController CreateController(List<LabResult> labResults)
-        //{
-        //    var repo = new InMemoryLabResultRepository(labResults);
-        //    var controller = new LabResultController(repo);
-        //    return controller;
-        //}
+        [Fact]
+        public void Get_By_Id_Returns_LabResult_Record()
+        {
+            var labResultId = 99;
+            var labResultCount = 20;
+            var patients = CreateTestPatients(20);
+            var labResults = CreateTestLabResults(labResultCount);
+            labResults[0].Id = labResultId;
+
+            var controller = CreateController(labResults, patients);
+
+            var result = controller.Get(labResultId);
+
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var actualLabResult = Assert.IsType<LabResult>(okResult.Value);
+
+            Assert.Equal(labResultId, actualLabResult.Id);
+        }
+
+        [Fact]
+        public void Get_By_Patient_Id_Returns_Matching_LabResults()
+        {
+            var patientId = 99;
+            var labResultCount = 20;
+            var patients = CreateTestPatients(20);
+            patients[0].Id = patientId;
+            var labResults = CreateTestLabResults(labResultCount);
+            labResults[0].PatientId = patientId;
+
+            var repo = new InMemoryLabResultRepository(labResults);
+            var patientRepo = new InMemoryPatientRepository(patients);
+            var controller = new LabResultController(repo, patientRepo);
+
+            var result = controller.GetByPatient(patientId);
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var actualLabResult = Assert.IsType<List<LabResult>>(okResult.Value);
+
+            Assert.All(actualLabResult, labResult => Assert.Equal(labResult.PatientId, patientId));
+        }
+
+        private LabResultController CreateController(List<LabResult> labResults, List<Patient> patients)
+        {
+            var repo = new InMemoryLabResultRepository(labResults);
+            var patientRepo = new InMemoryPatientRepository(patients);
+            var controller = new LabResultController(repo, patientRepo);
+            return controller;
+        }
 
         private List<LabResult> CreateTestLabResults(int count)
         {
@@ -58,6 +99,7 @@ namespace APIDevelopmentChallenge.Tests
                     TestType = $"TestType {i}",
                     Result = $"Result {i}",
                     PatientId = i,
+                    Patient = CreateTestPatient(i),
                     TimeOfTest = DateTime.Now.AddDays(-i),
                     LabName = $"LabName {i}",
                     OrderedByProvider = $"OrderedByProvider {i}",

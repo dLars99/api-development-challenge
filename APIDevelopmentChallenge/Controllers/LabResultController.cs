@@ -40,6 +40,37 @@ namespace APIDevelopmentChallenge.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            try
+            {
+                var labResult = _labResultRepository.GetById(id);
+                if (labResult == null)
+                {
+                    return NotFound();
+                }
+                return Ok(labResult);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"Cannot return lab result. Internal error: {e}");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetByPatient(int patientId)
+        {
+            try
+            {
+                return Ok(_labResultRepository.GetByPatientId(patientId));
+            }
+            catch
+            {
+                return StatusCode(500, "Internal error - cannot retrieve lab results");
+            }
+        }
+
         private static string ValidateData(LabResult labResult, Patient patient)
         {
             if (patient == null)
