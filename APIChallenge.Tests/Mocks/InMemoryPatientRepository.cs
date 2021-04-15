@@ -40,5 +40,22 @@ namespace APIDevelopmentChallenge.Tests.Mocks
         {
             return _data.FirstOrDefault(p => p.Id == id);
         }
+
+        public void Update(Patient patient)
+        {
+            var currentPatient = _data.FirstOrDefault(p => p.Id == patient.Id);
+            if (currentPatient == null)
+            {
+                return;
+            }
+
+            currentPatient.FirstName = patient.FirstName;
+            currentPatient.MiddleName = patient.MiddleName;
+            currentPatient.LastName = patient.LastName;
+            currentPatient.SexAtBirth = patient.SexAtBirth;
+            currentPatient.DateOfBirth = patient.DateOfBirth;
+            currentPatient.Height = patient.Height;
+            currentPatient.Weight = patient.Weight;
+        }
     }
 }

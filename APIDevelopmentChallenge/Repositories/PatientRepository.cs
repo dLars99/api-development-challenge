@@ -76,6 +76,7 @@ namespace APIDevelopmentChallenge.Repositories
         /// <summary>
         /// Method to retrieve a single patient record by the patient's id
         /// <param name="id">The id of the patient to be found</param>
+        /// <returns>An instance of a Patient using retrieved data</returns>
         /// </summary>
         public Patient GetById(int id)
         {
@@ -103,6 +104,57 @@ namespace APIDevelopmentChallenge.Repositories
 
         }
 
+        /// <summary>
+        /// Method to update an existing patient record in the database
+        /// </summary>
+        /// <param name="id">The id of the patient to be updated</param>
+        /// <param name="patient">The updated patient data to be saved to the database</param>
+        public void Update(Patient patient)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Patient 
+                                           SET FirstName = @FirstName,
+                                               MiddleName = @MiddleName,
+                                               LastName = @LastName,
+                                               SexAtBirth = @SexAtBirth,
+                                               DateOfBirth = @DateOfBirth,
+                                               Height = @Height,
+                                               Weight = @Weight,
+                                               InsuranceCompany = @InsuranceCompany,
+                                               MemberId = @MemberId,
+                                               GroupId = @GroupId,
+                                               IsPolicyHolder = @IsPolicyHolder
+                                         WHERE Id = @Id;";
+
+                    DbUtils.AddParameter(cmd, "@FirstName", patient.FirstName);
+                    DbUtils.AddParameter(cmd, "@MiddleName", patient.MiddleName);
+                    DbUtils.AddParameter(cmd, "@LastName", patient.LastName);
+                    DbUtils.AddParameter(cmd, "@SexAtBirth", patient.SexAtBirth);
+                    DbUtils.AddParameter(cmd, "@DateOfBirth", patient.DateOfBirth);
+                    DbUtils.AddParameter(cmd, "@Height", patient.Height);
+                    DbUtils.AddParameter(cmd, "@Weight", patient.Weight);
+                    DbUtils.AddParameter(cmd, "@InsuranceCompany", patient.InsuranceCompany);
+                    DbUtils.AddParameter(cmd, "@MemberId", patient.MemberId);
+                    DbUtils.AddParameter(cmd, "@GroupId", patient.GroupId);
+                    DbUtils.AddParameter(cmd, "@IsPolicyHolder", patient.IsPolicyHolder);
+                    DbUtils.AddParameter(cmd, "@Id", patient.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Method to create a new instance of a patient model with data
+        /// retrieved from the database
+        /// <param name="reader"></param>
+        /// <returns>The new instance of a Patient model</returns>
+        /// </summary>
         private Patient NewPatientFromDb(SqlDataReader reader)
         {
             return new Patient()
