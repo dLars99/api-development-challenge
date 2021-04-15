@@ -34,6 +34,7 @@ namespace APIDevelopmentChallenge
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "APIDevelopmentChallenge", Version = "v1" });
             });
             services.AddTransient<IPatientRepository, PatientRepository>();
+            services.AddTransient<ILabResultRepository, LabResultRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

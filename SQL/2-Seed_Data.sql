@@ -7,9 +7,9 @@ insert into Patient (Id, FirstName, MiddleName, LastName, SexAtBirth, DateOfBirt
 set identity_insert [Patient] off
 
 set identity_insert [LabResult] on
-insert into LabResult (Id, TestType, Result, PatientId, TimeOfTest, EnteredTime, LabName, OrderedByProvider, Measurement, Unit) values (1, 'Urinalysis', 'normal', 1, '04/03/2019', '04/04/2019', 'Aegis Lab Corp.', 'Dr. John Smith', 23, 'ppm');
-insert into LabResult (Id, TestType, Result, PatientId, TimeOfTest, EnteredTime, LabName, OrderedByProvider, Measurement, Unit) values (2, 'Blood sugar', 'elevated', 2, '06/02/2016', '06/02/2016', 'Phleb It Shine', 'Raymond Sweets, MD', 160, 'mg/dL');
-insert into LabResult (Id, TestType, Result, PatientId, TimeOfTest, EnteredTime, LabName, OrderedByProvider, Measurement, Unit) values (3, 'White blood cell count', 'normal', 2, '06/06/2016', '06/10/2016', 'Phleb It Shine', 'Raymond Sweets, MD', 7000, 'WBC/µL');
-insert into LabResult (Id, TestType, Result, PatientId, TimeOfTest, EnteredTime, LabName, OrderedByProvider, Measurement, Unit) values (4, 'LDL Cholesterol', 'optimal', 1, '08/12/2020', '08/13/2020', 'Renowned Medical Labs Inc.', 'Fran Harding, LNP', 88, 'mg/dL');
-insert into LabResult (Id, TestType, Result, PatientId, TimeOfTest, EnteredTime, LabName, OrderedByProvider, Measurement, Unit) values (5, 'Transferrin', 'low', 1, '08/12/2020', '08/17/2020', 'Renowned Medical Labs, Inc.', 'Fran Harding, LNP', 185, 'mg/dL');
+insert into LabResult (Id, TestType, Result, PatientId, TimeOfTest, EnteredTime, LabName, OrderedByProvider, Measurement, MeasurementUnit) values (1, 'Urinalysis', 'normal', 1, '04/03/2019', '04/04/2019', 'Aegis Lab Corp.', 'Dr. John Smith', 23, 'ppm');
+insert into LabResult (Id, TestType, Result, PatientId, TimeOfTest, EnteredTime, LabName, OrderedByProvider, Measurement, MeasurementUnit) values (2, 'Blood sugar', 'elevated', 2, '06/02/2016', '06/02/2016', 'Phleb It Shine', 'Raymond Sweets, MD', 160, 'mg/dL');
+insert into LabResult (Id, TestType, Result, PatientId, TimeOfTest, EnteredTime, LabName, OrderedByProvider, Measurement, MeasurementUnit) values (3, 'White blood cell count', 'normal', 2, '06/06/2016', '06/10/2016', 'Phleb It Shine', 'Raymond Sweets, MD', 7000, 'WBC/µL');
+insert into LabResult (Id, TestType, Result, PatientId, TimeOfTest, EnteredTime, LabName, OrderedByProvider, Measurement, MeasurementUnit) values (4, 'LDL Cholesterol', 'optimal', 1, '08/12/2020', '08/13/2020', 'Renowned Medical Labs Inc.', 'Fran Harding, LNP', 88, 'mg/dL');
+insert into LabResult (Id, TestType, Result, PatientId, TimeOfTest, EnteredTime, LabName, OrderedByProvider, Measurement, MeasurementUnit) values (5, 'Transferrin', 'low', 1, '08/12/2020', '08/17/2020', 'Renowned Medical Labs, Inc.', 'Fran Harding, LNP', 185, 'mg/dL');
 set identity_insert [LabResult] off

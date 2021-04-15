@@ -36,7 +36,7 @@ CREATE TABLE [LabResult] (
   [LabName] nvarchar(255) NOT NULL,
   [OrderedByProvider] nvarchar(255),
   [Measurement] decimal,
-  [Unit] nvarchar(255)
+  [MeasurementUnit] nvarchar(255)
 
   CONSTRAINT [FK_Patent_LabResult] FOREIGN KEY ([PatientId]) REFERENCES [Patient] ([Id])
 )
