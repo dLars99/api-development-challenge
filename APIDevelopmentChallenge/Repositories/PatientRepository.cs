@@ -158,7 +158,8 @@ namespace APIDevelopmentChallenge.Repositories
 
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "DELETE FROM Patient WHERE Id=@Id;";
+                    cmd.CommandText = @"DELETE FROM LabResult WHERE PatientId=@Id;
+                                        DELETE FROM Patient WHERE Id=@Id;";
                     DbUtils.AddParameter(cmd, "@Id", id);
 
                     cmd.ExecuteNonQuery();

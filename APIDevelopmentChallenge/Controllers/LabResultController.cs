@@ -78,15 +78,16 @@ namespace APIDevelopmentChallenge.Controllers
             {
                 return BadRequest("LabResult Id does not match route");
             }
-            var patient = _patientRepository.GetById(labResult.PatientId);
-            var errorMessage = ValidateData(labResult, patient);
-            if (!String.IsNullOrEmpty(errorMessage))
-            {
-                return BadRequest(errorMessage);
-            }
-
             try
             {
+
+                var patient = _patientRepository.GetById(labResult.PatientId);
+                var errorMessage = ValidateData(labResult, patient);
+                if (!String.IsNullOrEmpty(errorMessage))
+                {
+                    return BadRequest(errorMessage);
+                }
+
                 _labResultRepository.Update(labResult);
             }
             catch (Exception e)
@@ -96,6 +97,22 @@ namespace APIDevelopmentChallenge.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                _labResultRepository.Delete(id);
+            }
+            catch
+            {
+                return StatusCode(500, "Internal error -- Unable to delete patient");
+            }
+
+            return NoContent();
+        }
+
 
         private static string ValidateData(LabResult labResult, Patient patient)
         {

@@ -146,6 +146,25 @@ namespace APIDevelopmentChallenge.Repositories
             }
         }
 
+        /// <summary>
+        /// Method to remove a lab result from the database
+        /// </summary>
+        /// <param name="id">Id of the lab result to be removed</param>
+        public void Delete(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM LabResult WHERE Id=@Id;";
+                    DbUtils.AddParameter(cmd, "@Id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 
         private LabResult NewLabResultFromDb(SqlDataReader reader)
         {
