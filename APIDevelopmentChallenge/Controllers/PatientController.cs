@@ -60,5 +60,25 @@ namespace APIDevelopmentChallenge.Controllers
             }
             return Ok(patient);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Patient patient)
+        {
+            if (id != patient.Id)
+            {
+                return BadRequest("Patient Id does not match route");
+            }
+
+            try
+            {
+                _patientRepository.Update(patient);
+            }
+            catch
+            {
+                return StatusCode(500, "Internal error -- Unable to update patient");
+            }
+
+            return NoContent();
+        }
     }
 }
