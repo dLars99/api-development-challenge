@@ -22,7 +22,6 @@ namespace APIDevelopmentChallenge.Tests
 
             var newPatient = new Patient()
             {
-
             };
 
             controller.Post(newPatient);

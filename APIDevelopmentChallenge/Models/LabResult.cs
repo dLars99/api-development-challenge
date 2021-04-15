@@ -32,7 +32,7 @@ namespace APIDevelopmentChallenge.Models
         public string MeasurementUnit { get; set; }
         public LabResult()
         {
-            EnteredTime = new DateTime();
+            EnteredTime = DateTime.Now;
         }
     }
 }

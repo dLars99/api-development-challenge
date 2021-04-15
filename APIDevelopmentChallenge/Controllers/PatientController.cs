@@ -1,11 +1,7 @@
 ﻿using APIDevelopmentChallenge.Models;
 using APIDevelopmentChallenge.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace APIDevelopmentChallenge.Controllers
 {
@@ -37,6 +33,7 @@ namespace APIDevelopmentChallenge.Controllers
                 return StatusCode(500, "There was a problem saving this patient.");
             }
         }
+
         [HttpGet]
         public IActionResult Get()
         {
