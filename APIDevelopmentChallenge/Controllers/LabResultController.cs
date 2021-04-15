@@ -51,6 +51,12 @@ namespace APIDevelopmentChallenge.Controllers
             return Ok(labResult);
         }
 
+        [HttpGet]
+        public IActionResult GetByPatient(int patientId)
+        {
+            return Ok(_labResultRepository.GetByPatientId(patientId));
+        }
+
         private static string ValidateData(LabResult labResult, Patient patient)
         {
             if (patient == null)

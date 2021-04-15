@@ -76,6 +76,35 @@ namespace APIDevelopmentChallenge.Repositories
             }
         }
 
+        public List<LabResult> GetByPatientId(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT lr.Id AS LabResultId, lr.TestType, lr.Result, lr.PatientId, lr.TimeOfTest, lr.EnteredTime, 
+                               lr.LabName, lr.OrderedByProvider, lr.Measurement, lr.MeasurementUnit,
+
+                               p.Id AS PatientId, p.FirstName, p.MiddleName, p.LastName, p.SexAtBirth, p.DateOfBirth, 
+                               p.Height, p.Weight, p.InsuranceCompany, p.MemberId, p.GroupId, p.IsPolicyHolder
+                          FROM LabResult lr
+                     LEFT JOIN Patient p on p.Id = lr.PatientId
+                         WHERE lr.PatientId = @Id";
+                    DbUtils.AddParameter(cmd, "@Id", id);
+                    var labResults = new List<LabResult>();
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        labResults.Add(NewLabResultFromDb(reader));
+                    }
+                    reader.Close();
+                    return labResults;
+                }
+            }
+        }
+
         private LabResult NewLabResultFromDb(SqlDataReader reader)
         {
             return new LabResult()

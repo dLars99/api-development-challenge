@@ -1,4 +1,5 @@
 ﻿using APIDevelopmentChallenge.Models;
+using System.Collections.Generic;
 
 namespace APIDevelopmentChallenge.Repositories
 {
@@ -6,5 +7,6 @@ namespace APIDevelopmentChallenge.Repositories
     {
         void Add(LabResult labResult);
         LabResult GetById(int id);
+        List<LabResult> GetByPatientId(int id);
     }
 }
