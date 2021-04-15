@@ -15,8 +15,8 @@ namespace APIDevelopmentChallenge.Tests
         public void Post_Method_Adds_A_New_Lab_Result()
         {
             var labResultCount = 20;
-            var labResults = CreateTestLabResults(labResultCount);
             var patients = CreateTestPatients(20);
+            var labResults = CreateTestLabResults(labResultCount);
 
             var repo = new InMemoryLabResultRepository(labResults);
             var patientRepo = new InMemoryPatientRepository(patients);
