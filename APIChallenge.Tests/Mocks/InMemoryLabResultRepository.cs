@@ -58,6 +58,16 @@ namespace APIDevelopmentChallenge.Tests.Mocks
             currentLabResult.Measurement = labResult.Measurement;
             currentLabResult.MeasurementUnit = labResult.MeasurementUnit;
         }
+        public void Delete(int id)
+        {
+            var labResultToDelete = _data.FirstOrDefault(lr => lr.Id == id);
+            if (labResultToDelete == null)
+            {
+                return;
+            }
+
+            _data.Remove(labResultToDelete);
+        }
 
     }
 }

@@ -35,6 +35,9 @@ namespace APIDevelopmentChallenge.Tests
                 MeasurementUnit = "Unit"
             };
 
+            // Make sure patient can be found for verification
+            patients.Add(newLabResult.Patient);
+
             controller.Post(newLabResult);
 
             Assert.Equal(labResultCount + 1, repo.InternalData.Count);
@@ -111,12 +114,12 @@ namespace APIDevelopmentChallenge.Tests
         }
 
         [Fact]
-        public void Put_Method_Updates_A_Patient()
+        public void Put_Method_Updates_A_LabResult()
         {
             var labResultId = 99;
             var patients = CreateTestPatients(5);
             var labResults = CreateTestLabResults(5);
-            patients[0].Id = labResultId;
+            labResults[0].Id = labResultId;
 
             var repo = new InMemoryLabResultRepository(labResults);
             var patientRepo = new InMemoryPatientRepository(patients);
@@ -136,6 +139,9 @@ namespace APIDevelopmentChallenge.Tests
                 MeasurementUnit = "Unit"
             };
 
+            // Make sure patient can be found for verification
+            patients.Add(labResultToUpdate.Patient);
+
             controller.Put(labResultId, labResultToUpdate);
 
             var labResultFromDb = repo.InternalData.FirstOrDefault(lr => lr.Id == labResultId);
@@ -150,6 +156,24 @@ namespace APIDevelopmentChallenge.Tests
             Assert.Equal(labResultToUpdate.OrderedByProvider, labResultFromDb.OrderedByProvider);
             Assert.Equal(labResultToUpdate.Measurement, labResultFromDb.Measurement);
             Assert.Equal(labResultToUpdate.MeasurementUnit, labResultFromDb.MeasurementUnit);
+        }
+
+        [Fact]
+        public void Delete_Method_Removes_A_LabResult()
+        {
+            var labResultId = 99;
+            var labResults = CreateTestLabResults(5);
+            var patients = CreateTestPatients(5);
+            labResults[0].Id = labResultId;
+
+            var repo = new InMemoryLabResultRepository(labResults);
+            var patientRepo = new InMemoryPatientRepository(patients);
+            var controller = new LabResultController(repo, patientRepo);
+
+            controller.Delete(labResultId);
+
+            var labResultFromDb = repo.InternalData.FirstOrDefault(p => p.Id == labResultId);
+            Assert.Null(labResultFromDb);
         }
 
         private LabResultController CreateController(List<LabResult> labResults, List<Patient> patients)
