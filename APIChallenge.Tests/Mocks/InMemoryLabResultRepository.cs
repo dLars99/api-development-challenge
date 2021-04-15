@@ -40,5 +40,24 @@ namespace APIDevelopmentChallenge.Tests.Mocks
             return labResults;
         }
 
+        public void Update(LabResult labResult)
+        {
+            var currentLabResult = _data.FirstOrDefault(p => p.Id == labResult.Id);
+            if (currentLabResult == null)
+            {
+                return;
+            }
+
+            currentLabResult.TestType = labResult.TestType;
+            currentLabResult.Result = labResult.Result;
+            currentLabResult.PatientId = labResult.PatientId;
+            currentLabResult.TimeOfTest = labResult.TimeOfTest;
+            currentLabResult.EnteredTime = labResult.EnteredTime;
+            currentLabResult.LabName = labResult.LabName;
+            currentLabResult.OrderedByProvider = labResult.OrderedByProvider;
+            currentLabResult.Measurement = labResult.Measurement;
+            currentLabResult.MeasurementUnit = labResult.MeasurementUnit;
+        }
+
     }
 }

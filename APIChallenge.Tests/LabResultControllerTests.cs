@@ -80,6 +80,78 @@ namespace APIDevelopmentChallenge.Tests
             Assert.All(actualLabResult, labResult => Assert.Equal(labResult.PatientId, patientId));
         }
 
+        [Fact]
+        public void Put_Method_Returns_BadRequest_When_Ids_Do_Not_Match()
+        {
+            var labResultId = 99;
+            var patients = CreateTestPatients(5);
+            var labResults = CreateTestLabResults(5);
+            labResults[0].Id = labResultId;
+
+            var controller = CreateController(labResults, patients);
+
+            var labResultToUpdate = new LabResult()
+            {
+                Id = labResultId,
+                TestType = "TestType",
+                Result = "Result",
+                Patient = CreateTestPatient(999),
+                PatientId = 999,
+                TimeOfTest = DateTime.Now.AddDays(-2),
+                LabName = "LabName",
+                OrderedByProvider = "OrderedByProvider",
+                Measurement = 1,
+                MeasurementUnit = "Unit"
+            };
+            var someOtherLabResultId = labResultId + 1;
+
+            var result = controller.Put(someOtherLabResultId, labResultToUpdate);
+
+            Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public void Put_Method_Updates_A_Patient()
+        {
+            var labResultId = 99;
+            var patients = CreateTestPatients(5);
+            var labResults = CreateTestLabResults(5);
+            patients[0].Id = labResultId;
+
+            var repo = new InMemoryLabResultRepository(labResults);
+            var patientRepo = new InMemoryPatientRepository(patients);
+            var controller = new LabResultController(repo, patientRepo);
+
+            var labResultToUpdate = new LabResult()
+            {
+                Id = labResultId,
+                TestType = "TestType",
+                Result = "Result",
+                Patient = CreateTestPatient(999),
+                PatientId = 999,
+                TimeOfTest = DateTime.Now.AddDays(-2),
+                LabName = "LabName",
+                OrderedByProvider = "OrderedByProvider",
+                Measurement = 1,
+                MeasurementUnit = "Unit"
+            };
+
+            controller.Put(labResultId, labResultToUpdate);
+
+            var labResultFromDb = repo.InternalData.FirstOrDefault(lr => lr.Id == labResultId);
+            Assert.NotNull(labResultFromDb);
+
+            Assert.Equal(labResultToUpdate.TestType, labResultFromDb.TestType);
+            Assert.Equal(labResultToUpdate.Result, labResultFromDb.Result);
+            Assert.Equal(labResultToUpdate.PatientId, labResultFromDb.PatientId);
+            Assert.Equal(labResultToUpdate.TimeOfTest, labResultFromDb.TimeOfTest);
+            Assert.Equal(labResultToUpdate.EnteredTime, labResultFromDb.EnteredTime);
+            Assert.Equal(labResultToUpdate.LabName, labResultFromDb.LabName);
+            Assert.Equal(labResultToUpdate.OrderedByProvider, labResultFromDb.OrderedByProvider);
+            Assert.Equal(labResultToUpdate.Measurement, labResultFromDb.Measurement);
+            Assert.Equal(labResultToUpdate.MeasurementUnit, labResultFromDb.MeasurementUnit);
+        }
+
         private LabResultController CreateController(List<LabResult> labResults, List<Patient> patients)
         {
             var repo = new InMemoryLabResultRepository(labResults);
