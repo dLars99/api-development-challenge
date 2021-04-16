@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using APIDevelopmentChallenge.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace APIDevelopmentChallenge.Tests
 {
@@ -20,7 +21,8 @@ namespace APIDevelopmentChallenge.Tests
 
             var repo = new InMemoryLabResultRepository(labResults);
             var patientRepo = new InMemoryPatientRepository(patients);
-            var controller = new LabResultController(repo, patientRepo);
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var controller = new LabResultController(repo, patientRepo, cache);
 
             var newLabResult = new LabResult()
             {
@@ -74,7 +76,8 @@ namespace APIDevelopmentChallenge.Tests
 
             var repo = new InMemoryLabResultRepository(labResults);
             var patientRepo = new InMemoryPatientRepository(patients);
-            var controller = new LabResultController(repo, patientRepo);
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var controller = new LabResultController(repo, patientRepo, cache);
 
             var result = controller.GetByPatient(patientId);
             var okResult = Assert.IsType<OkObjectResult>(result);
@@ -123,7 +126,8 @@ namespace APIDevelopmentChallenge.Tests
 
             var repo = new InMemoryLabResultRepository(labResults);
             var patientRepo = new InMemoryPatientRepository(patients);
-            var controller = new LabResultController(repo, patientRepo);
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var controller = new LabResultController(repo, patientRepo, cache);
 
             var labResultToUpdate = new LabResult()
             {
@@ -168,7 +172,8 @@ namespace APIDevelopmentChallenge.Tests
 
             var repo = new InMemoryLabResultRepository(labResults);
             var patientRepo = new InMemoryPatientRepository(patients);
-            var controller = new LabResultController(repo, patientRepo);
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var controller = new LabResultController(repo, patientRepo, cache);
 
             controller.Delete(labResultId);
 
@@ -180,7 +185,8 @@ namespace APIDevelopmentChallenge.Tests
         {
             var repo = new InMemoryLabResultRepository(labResults);
             var patientRepo = new InMemoryPatientRepository(patients);
-            var controller = new LabResultController(repo, patientRepo);
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var controller = new LabResultController(repo, patientRepo, cache);
             return controller;
         }
 
