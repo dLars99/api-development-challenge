@@ -1,7 +1,9 @@
 ﻿using APIDevelopmentChallenge.Models;
 using APIDevelopmentChallenge.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System;
+using System.Collections.Generic;
 
 namespace APIDevelopmentChallenge.Controllers
 {
@@ -11,12 +13,15 @@ namespace APIDevelopmentChallenge.Controllers
     {
         private readonly ILabResultRepository _labResultRepository;
         private readonly IPatientRepository _patientRepository;
+        private readonly IMemoryCache _cache;
 
         public LabResultController(ILabResultRepository labResultRepository,
-                                   IPatientRepository patientRepository)
+                                   IPatientRepository patientRepository,
+                                   IMemoryCache memoryCache)
         {
             _labResultRepository = labResultRepository;
             _patientRepository = patientRepository;
+            _cache = memoryCache;
         }
 
         [HttpPost]
@@ -32,11 +37,12 @@ namespace APIDevelopmentChallenge.Controllers
             try
             {
                 _labResultRepository.Add(labResult);
+                var cacheKey = "LabResult" + labResult.Id;
                 return CreatedAtAction("Get", new { id = labResult.Id }, labResult);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(500, "There was a problem saving this lab result.");
+                return StatusCode(500, $"Cannot save this lab report -- internal error {e}");
             }
         }
 
@@ -45,10 +51,15 @@ namespace APIDevelopmentChallenge.Controllers
         {
             try
             {
-                var labResult = _labResultRepository.GetById(id);
-                if (labResult == null)
+                var cacheKey = "LabResult" + id;
+                if (!_cache.TryGetValue(cacheKey, out LabResult labResult))
                 {
-                    return NotFound();
+                    labResult = _labResultRepository.GetById(id);
+                    if (labResult == null)
+                    {
+                        return NotFound();
+                    }
+                    _cache.Set(cacheKey, labResult);
                 }
                 return Ok(labResult);
             }
@@ -63,11 +74,19 @@ namespace APIDevelopmentChallenge.Controllers
         {
             try
             {
-                return Ok(_labResultRepository.GetByPatientId(patientId));
+                var cacheKey = "LabResultPatient" + patientId;
+                if (!_cache.TryGetValue(cacheKey, out List<LabResult> labResults))
+                {
+
+                    labResults = _labResultRepository.GetByPatientId(patientId);
+                    _cache.Set(cacheKey, labResults);
+                }
+                 
+                return Ok(labResults);
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(500, "Internal error - cannot retrieve lab results");
+                return StatusCode(500, $"Unable to retrieve lab reports -- Internal Error {e}");
             }
         }
 
@@ -80,8 +99,16 @@ namespace APIDevelopmentChallenge.Controllers
             }
             try
             {
-
-                var patient = _patientRepository.GetById(labResult.PatientId);
+                var cacheKey = "LabResult" + labResult.Id;
+                var patientCacheKey = "Patient" + labResult.PatientId;
+                if (!_cache.TryGetValue(patientCacheKey, out Patient patient))
+                {
+                    patient = _patientRepository.GetById(labResult.PatientId);
+                    if (patient != null)
+                    {
+                        _cache.Set(patientCacheKey, patient);
+                    }
+                }
                 var errorMessage = ValidateData(labResult, patient);
                 if (!String.IsNullOrEmpty(errorMessage))
                 {
@@ -89,6 +116,7 @@ namespace APIDevelopmentChallenge.Controllers
                 }
 
                 _labResultRepository.Update(labResult);
+                _cache.Set(cacheKey, labResult);
             }
             catch (Exception e)
             {
@@ -103,7 +131,9 @@ namespace APIDevelopmentChallenge.Controllers
         {
             try
             {
+                var cacheKey = "LabResult" + id;
                 _labResultRepository.Delete(id);
+                _cache.Remove(cacheKey);
             }
             catch
             {

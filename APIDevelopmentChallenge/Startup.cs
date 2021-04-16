@@ -29,6 +29,7 @@ namespace APIDevelopmentChallenge
         {
 
             services.AddControllers();
+            services.AddMemoryCache();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "APIDevelopmentChallenge", Version = "v1" });
