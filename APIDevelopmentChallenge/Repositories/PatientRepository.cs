@@ -2,6 +2,7 @@
 using GearPatch.Utils;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 
 namespace APIDevelopmentChallenge.Repositories
@@ -47,6 +48,7 @@ namespace APIDevelopmentChallenge.Repositories
         /// <summary>
         /// Method to retrieve the full list of patient records
         /// </summary>
+        /// <returns>List of all patients from the database</returns>
         public List<Patient> GetAll()
         {
             using (var conn = Connection)
@@ -166,6 +168,45 @@ namespace APIDevelopmentChallenge.Repositories
                 }
             }
         }
+
+        /// <summary>
+        /// Method which retrieves targeted patient from the database based on whether or not they
+        /// have had lab results which meet specified criteria.
+        /// </summary>
+        /// <param name="query">A specified LabResult TestType</param>
+        /// <param name="startDate">Start date of a date range within which the lab result took place</param>
+        /// <param name="endDate">End date of a date range within which the lab result took place</param>
+        /// <returns>List of patients who meet the criteria</returns>
+        public List<Patient> GetByLabs(string query, DateTime startDate, DateTime endDate)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT p.Id, p.FirstName, p.MiddleName, p.LastName, p.SexAtBirth, p.DateOfBirth,
+                               p.Height, p.Weight, p.InsuranceCompany, p.MemberId, p.GroupId, p.IsPolicyHolder
+                          
+                          FROM Patient p
+                     INNER JOIN LabResult lr ON lr.PatientId = p.Id
+                         WHERE lr.TestType = @query AND lr.TimeOfTest BETWEEN @startDate AND @endDate;";
+                    DbUtils.AddParameter(cmd, "@query", query);
+                    DbUtils.AddParameter(cmd, "@startDate", startDate);
+                    DbUtils.AddParameter(cmd, "@endDate", endDate);
+
+                    var patientList = new List<Patient>();
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        patientList.Add(NewPatientFromDb(reader));
+                    }
+                    reader.Close();
+                    return patientList;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Method to create a new instance of a patient model with data

@@ -156,6 +156,31 @@ namespace APIDevelopmentChallenge.Tests
             Assert.Null(patientFromDb);
         }
 
+        [Fact]
+        public void Query_Search_Returns_Matching_Results()
+        {
+            int itemCount = 20;
+            var patients = CreateTestPatients(itemCount);
+            var query1 = "TestType-1";
+            var query2 = "TestType-2";
+            var startDate = DateTime.Now.AddDays(-10);
+            var endDate = DateTime.Now.AddDays(-5);
+
+            var controller = CreateController(patients);
+            var result1 = controller.GetByLabs(query1, startDate, endDate);
+            var result2 = controller.GetByLabs(query2, startDate, endDate);
+
+            var OkObject1 = Assert.IsType<OkObjectResult>(result1);
+            var actualPatient1 = Assert.IsType<List<Patient>>(OkObject1.Value);
+
+            var OkObject2 = Assert.IsType<OkObjectResult>(result2);
+            var actualPatient2 = Assert.IsType<List<Patient>>(OkObject2.Value);
+
+            // Item 5 is not hit because LabResults are generated after the endDate query
+            Assert.Equal(2, actualPatient1.Count); // Items 7, 9
+            Assert.Equal(3, actualPatient2.Count); // Items 6, 8, 10
+        }
+
         private PatientController CreateController(List<Patient> patients)
         {
             var repo = new InMemoryPatientRepository(patients);
