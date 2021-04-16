@@ -9,6 +9,10 @@ namespace APIDevelopmentChallenge.Repositories
 {
     public class PatientRepository : BaseRespository, IPatientRepository
     {
+        /// <summary>
+        /// A collection of methods to interact with the Patient table in the SQL database
+        /// </summary>
+        /// <param name="configuration">Configuration parameters</param>
         public PatientRepository(IConfiguration configuration) : base(configuration) { }
 
         /// <summary>

@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace APIDevelopmentChallenge.Models
 {
+    /// <summary>
+    /// Model to represent Patient items
+    /// </summary>
     public class Patient
     {
         [Key]

@@ -73,6 +73,12 @@ namespace GearPatch.Utils
             return reader.GetBoolean(reader.GetOrdinal(column));
         }
 
+        /// <summary>
+        /// Get a bool? (nullable boolean) from a data reader object and gracefully handle NULL values
+        /// </summary>
+        /// <param name="reader">A SqlDataReader that has not exhausted its result set</param>
+        /// <param name="column">The name of the column from the result set referred to by the reader</param>
+        /// <returns>The value of the given column or null</returns>
         public static bool? GetNullableBool(SqlDataReader reader, string column)
         {
             var ordinal = reader.GetOrdinal(column);
@@ -83,6 +89,12 @@ namespace GearPatch.Utils
             return reader.GetBoolean(ordinal);
         }
 
+        /// <summary>
+        /// Get a decimal? (nullable decimal) from a data reader object and gracefully handle NULL values
+        /// </summary>
+        /// <param name="reader">A SqlDataReader that has not exhausted its result se</param>
+        /// <param name="column">The name of the column from the result set referred to by the reader</param>
+        /// <returns>The value of the given column or null</returns>
         public static decimal? GetNullableDecimal(SqlDataReader reader, string column)
         {
             var ordinal = reader.GetOrdinal(column);
@@ -113,6 +125,12 @@ namespace GearPatch.Utils
             return reader.GetInt32(ordinal);
         }
 
+        /// <summary>
+        /// Get an int, but return a 0 if the value is null
+        /// </summary>
+        /// <param name="reader">A SqlDataReader that has not exhausted its result set</param>
+        /// <param name="column">The name of the column from the result set refereed to by the reader</param>
+        /// <returns>The value of the given column or 0</returns>
         public static int GetZeroIfNullInt(SqlDataReader reader, string column)
         {
             var ordinal = reader.GetOrdinal(column);

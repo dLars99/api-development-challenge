@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace APIDevelopmentChallenge.Models
 {
+    /// <summary>
+    /// Model to represent LabResult items
+    /// </summary>
     public class LabResult
     {
         [Key]

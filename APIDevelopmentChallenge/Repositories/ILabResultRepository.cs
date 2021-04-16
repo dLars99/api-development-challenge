@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace APIDevelopmentChallenge.Repositories
 {
+    /// <summary>
+    /// Interface to outline methods of a LabResultRepository
+    /// </summary>
     public interface ILabResultRepository
     {
         void Add(LabResult labResult);

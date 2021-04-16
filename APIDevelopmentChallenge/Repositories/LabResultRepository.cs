@@ -8,6 +8,10 @@ namespace APIDevelopmentChallenge.Repositories
 {
     public class LabResultRepository : BaseRespository, ILabResultRepository
     {
+        /// <summary>
+        /// A collection of methods to interact with the LabResult table in the database
+        /// </summary>
+        /// <param name="configuration">Configuration parameters</param>
         public LabResultRepository(IConfiguration configuration) : base(configuration) { }
 
         /// <summary>
@@ -76,6 +80,11 @@ namespace APIDevelopmentChallenge.Repositories
             }
         }
 
+        /// <summary>
+        /// A method to retrieve lab results for a specific patient
+        /// </summary>
+        /// <param name="id">The Id of the patient whose records are to be retrieved</param>
+        /// <returns>A list of LabResults</returns>
         public List<LabResult> GetByPatientId(int id)
         {
             using (var conn = Connection)
@@ -166,6 +175,11 @@ namespace APIDevelopmentChallenge.Repositories
             }
         }
 
+        /// <summary>
+        /// A method to create a new instance of a LabResult from database data
+        /// </summary>
+        /// <param name="reader">A SQL reader which has not yet been exhausted</param>
+        /// <returns>An instance of a LabResult</returns>
         private LabResult NewLabResultFromDb(SqlDataReader reader)
         {
             return new LabResult()
