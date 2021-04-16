@@ -3,6 +3,9 @@ using Microsoft.Data.SqlClient;
 
 namespace APIDevelopmentChallenge.Repositories
 {
+    /// <summary>
+    /// Base repostory class for interacting with the SQL database
+    /// </summary>
     public abstract class BaseRespository
     {
         private readonly string _connectionString;

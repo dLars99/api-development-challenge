@@ -6,6 +6,10 @@ namespace APIDevelopmentChallenge.Repositories
 {
     public interface IPatientRepository
     {
+        /// <summary>
+        /// Interface to outline methods in the Patient Repository
+        /// </summary>
+        /// <param name="patient"></param>
         void Add(Patient patient);
         List<Patient> GetAll();
         Patient GetById(int id);
