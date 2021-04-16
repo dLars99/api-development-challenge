@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using APIDevelopmentChallenge.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace APIDevelopmentChallenge.Tests
 {
@@ -18,7 +19,8 @@ namespace APIDevelopmentChallenge.Tests
             var patients = CreateTestPatients(patientCount);
 
             var repo = new InMemoryPatientRepository(patients);
-            var controller = new PatientController(repo);
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var controller = new PatientController(repo, cache);
 
             var newPatient = new Patient()
             {
@@ -112,7 +114,8 @@ namespace APIDevelopmentChallenge.Tests
             patients[0].Id = patientId;
 
             var repo = new InMemoryPatientRepository(patients);
-            var controller = new PatientController(repo);
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var controller = new PatientController(repo, cache);
 
             var patientToUpdate = new Patient()
             {
@@ -148,7 +151,8 @@ namespace APIDevelopmentChallenge.Tests
             patients[0].Id = patientId;
 
             var repo = new InMemoryPatientRepository(patients);
-            var controller = new PatientController(repo);
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var controller = new PatientController(repo, cache);
 
             controller.Delete(patientId);
 
@@ -184,7 +188,8 @@ namespace APIDevelopmentChallenge.Tests
         private PatientController CreateController(List<Patient> patients)
         {
             var repo = new InMemoryPatientRepository(patients);
-            var controller = new PatientController(repo);
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var controller = new PatientController(repo, cache);
             return controller;
         }
 
