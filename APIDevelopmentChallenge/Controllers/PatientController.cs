@@ -92,5 +92,16 @@ namespace APIDevelopmentChallenge.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("labs")]
+        public IActionResult GetByLabs(string query, DateTime startDate, DateTime endDate)
+        {
+            if (startDate > endDate)
+            {
+                return BadRequest("Invalid date range");
+            }
+
+            return Ok(_patientRepository.GetByLabs(query, startDate, endDate));
+        }
     }
 }
